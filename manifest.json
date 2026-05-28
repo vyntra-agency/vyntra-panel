@@ -1,0 +1,18 @@
+{
+  "name": "VYNTRA Panel — Laura",
+  "short_name": "VYNTRA",
+  "description": "Panel interno VYNTRA - Socia Comercial",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0D1F40",
+  "theme_color": "#0D1F40",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
