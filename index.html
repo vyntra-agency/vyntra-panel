@@ -952,7 +952,7 @@ async function sendChat() {
   try {
     const res = await fetch(chatUrl + '/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'bypass-tunnel-reminder': 'true' },
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
       body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
