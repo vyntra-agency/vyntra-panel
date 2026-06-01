@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VYNTRA · Generador de Contenido</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --marina:   #0D1F40;
+  --cobalto:  #2563EB;
+  --soft:     #6BA8F5;
+  --arena:    #F1EFE8;
+  --bg:       #07101e;
+  --surface:  #0c1729;
+  --surface2: #101e30;
+  --border:   rgba(37,99,235,0.16);
+  --border2:  rgba(107,168,245,0.09);
+  --muted:    rgba(255,255,255,0.38);
+  --success:  #10b981;
+  --danger:   #ef4444;
+  --warn:     #f59e0b;
+}
+
+body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── HEADER ── */
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.hdr-logo { font-family: Georgia, serif; font-weight: 700; font-size: 15px; letter-spacing: 4px; color: #fff; }
+.hdr-logo span { font-size: 8px; font-family: 'Inter', sans-serif; font-weight: 400; letter-spacing: 2.5px; color: var(--soft); display: block; margin-top: 1px; }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 2px; }
+.tab {
+  background: transparent; border: 1px solid transparent; color: var(--muted);
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 7px 16px;
+  cursor: pointer; transition: all .15s;
+}
+.tab:hover { color: rgba(255,255,255,.65); }
+.tab.on { color: var(--soft); border-color: var(--border); background: rgba(37,99,235,.08); }
+
+.panel { display: none; } .panel.on { display: block; }
+
+/* ══════════════════════════════════════════════
+   TAB GENERADOR
+══════════════════════════════════════════════ */
+.gen-wrap {
+  display: grid; grid-template-columns: 360px 1fr;
+  height: calc(100vh - 53px);
+}
+
+/* SIDEBAR FORM */
+.gen-sidebar {
+  background: var(--surface); border-right: 1px solid var(--border);
+  padding: 24px 20px; overflow-y: auto;
+}
+
+.sec-title {
+  font-size: 8px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--soft); padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
+}
+
+.fld { margin-bottom: 16px; }
+.fld-lbl { font-size: 8px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); display: block; margin-bottom: 7px; }
+
+.fld-select, .fld-input, .fld-textarea {
+  width: 100%; background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  color: #fff; font-family: 'Inter', sans-serif; font-size: 12px; padding: 9px 12px;
+  outline: none; transition: border-color .2s;
+}
+.fld-select:focus, .fld-input:focus, .fld-textarea:focus { border-color: var(--cobalto); }
+.fld-select option { background: #0c1729; }
+.fld-textarea { resize: none; height: 68px; }
+
+/* CHIPS */
+.chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip {
+  padding: 5px 12px; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; cursor: pointer; border: 1px solid var(--border);
+  color: var(--muted); background: transparent; transition: all .15s;
+  font-family: 'Inter', sans-serif;
+}
+.chip.on { color: var(--soft); border-color: var(--cobalto); background: rgba(37,99,235,.1); }
+
+/* DIVIDER */
+.divider { border: none; border-top: 1px solid var(--border2); margin: 16px 0; }
+
+/* BTN GENERATE */
+.btn-gen {
+  width: 100%; background: var(--cobalto); border: none; color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; padding: 13px; cursor: pointer;
+  transition: background .2s; margin-top: 4px;
+}
+.btn-gen:hover:not(:disabled) { background: #1d4ed8; }
+.btn-gen:disabled { opacity: .45; cursor: not-allowed; }
+.btn-gen.loading .btn-txt { display: none; }
+.btn-gen .sp {
+  display: none; width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.25);
+  border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto;
+}
+.btn-gen.loading .sp { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESULT AREA ── */
+.gen-result { padding: 24px 28px; overflow-y: auto; }
+
+.result-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; text-align: center;
+}
+.result-empty .ico { font-size: 40px; opacity: .15; margin-bottom: 12px; }
+.result-empty p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+.result-grid { display: none; grid-template-columns: 360px 1fr; gap: 28px; }
+.result-grid.on { display: grid; }
+
+/* IG MOCK */
+.ig-mock { max-width: 360px; }
+.ig-card { background: var(--surface2); border: 1px solid var(--border); }
+.ig-top { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border2); }
+.ig-ava {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cobalto), var(--soft));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.ig-user { font-size: 11px; font-weight: 700; }
+.ig-sub { font-size: 9px; color: var(--muted); }
+.ig-more { margin-left: auto; color: var(--muted); font-size: 16px; letter-spacing: 1px; }
+.ig-img {
+  width: 100%; aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--marina) 0%, #1c3560 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.ig-img-txt { font-family: Georgia, serif; font-size: 20px; font-weight: 700; letter-spacing: 3px; color: rgba(255,255,255,.1); text-align: center; pointer-events: none; transition: opacity .3s; }
+.ig-img > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+.ig-img.img-loaded > img { display: block; }
+.ig-img.img-loaded .ig-img-txt { display: none; }
+.ig-img.img-loading .ig-img-txt { opacity: .3; }
+.img-spin-wrap { position: absolute; display: none; flex-direction: column; align-items: center; gap: 8px; }
+.ig-img.img-loading .img-spin-wrap { display: flex; }
+.img-spin { width: 26px; height: 26px; border: 2px solid rgba(255,255,255,.12); border-top-color: var(--cobalto); border-radius: 50%; animation: spin .7s linear infinite; }
+.img-spin-lbl { font-size: 9px; letter-spacing: 2px; color: var(--soft); text-transform: uppercase; }
+.btn-img-gen {
+  width: 100%; background: transparent; border: 1px solid var(--border); color: var(--soft);
+  font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; padding: 9px 12px; cursor: pointer; transition: all .15s;
+  margin-top: 10px;
+}
+.btn-img-gen:hover:not(:disabled) { border-color: var(--cobalto); background: rgba(37,99,235,.08); }
+.btn-img-gen:disabled { opacity: .4; cursor: not-allowed; }
+.ig-btns { display: flex; gap: 14px; padding: 8px 12px; font-size: 9px; color: var(--muted); border-bottom: 1px solid var(--border2); }
+.ig-caption-box { padding: 10px 12px; font-size: 11px; line-height: 1.55; color: rgba(255,255,255,.75); max-height: 110px; overflow: hidden; }
+.ig-caption-box strong { color: #fff; font-weight: 700; }
+.ig-tags { padding: 0 12px 10px; font-size: 10px; color: var(--soft); line-height: 1.6; word-break: break-all; }
+
+/* TEXT PANEL */
+.txt-panel { display: flex; flex-direction: column; gap: 14px; }
+.txt-blk { background: var(--surface); border: 1px solid var(--border); padding: 14px; }
+.txt-blk-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+.txt-blk-lbl { font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--soft); }
+.btn-copy {
+  background: transparent; border: 1px solid var(--border); color: var(--soft);
+  font-family: 'Inter', sans-serif; font-size: 8px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; cursor: pointer; transition: all .15s;
+}
+.btn-copy:hover { border-color: var(--cobalto); background: rgba(37,99,235,.1); }
+.btn-copy.ok { color: var(--success); border-color: var(--success); }
+
+.txt-out {
+  font-size: 12px; line-height: 1.7; color: rgba(255,255,255,.72); white-space: pre-wrap;
+  max-height: 180px; overflow-y: auto; outline: none;
+}
+.txt-out:empty::before { content: attr(data-ph); color: var(--muted); }
+.char-count { font-size: 9px; color: var(--muted); margin-top: 6px; text-align: right; }
+
+.btn-save {
+  width: 100%; background: var(--cobalto); border: none; color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase; padding: 11px; cursor: pointer; transition: background .2s;
+}
+.btn-save:hover { background: #1d4ed8; }
+
+.btn-regen {
+  width: 100%; background: transparent; border: 1px solid var(--border); color: var(--muted);
+  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 9px; cursor: pointer; transition: all .15s;
+}
+.btn-regen:hover { border-color: var(--cobalto); color: var(--soft); }
+
+/* ══════════════════════════════════════════════
+   TAB BANCO
+══════════════════════════════════════════════ */
+.banco-wrap { padding: 24px 28px; }
+.banco-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.fchip {
+  padding: 5px 14px; font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; cursor: pointer; border: 1px solid var(--border);
+  color: var(--muted); background: transparent; font-family: 'Inter', sans-serif; transition: all .15s;
+}
+.fchip.on { color: var(--soft); border-color: var(--cobalto); background: rgba(37,99,235,.08); }
+
+.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px,1fr)); gap: 16px; }
+.pcard {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 14px; cursor: pointer; transition: border-color .15s;
+}
+.pcard:hover { border-color: var(--cobalto); }
+.pcard-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+.pcard-cli { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--soft); }
+.pcard-tipo { font-size: 9px; color: var(--muted); letter-spacing: 1px; }
+.pcard-hook { font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 7px; }
+.pcard-prev { font-size: 11px; color: var(--muted); line-height: 1.5; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.pcard-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border2); }
+.pcard-date { font-size: 9px; color: var(--muted); }
+.pcard-acts { display: flex; gap: 6px; }
+
+.ico-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  width: 26px; height: 26px; cursor: pointer; font-size: 11px;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.ico-btn:hover { border-color: var(--cobalto); color: var(--soft); }
+.ico-btn.del:hover { border-color: var(--danger); color: var(--danger); }
+
+.banco-empty { text-align: center; padding: 72px 20px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+
+/* ══════════════════════════════════════════════
+   TAB CALENDARIO
+══════════════════════════════════════════════ */
+.cal-wrap { padding: 24px 28px; }
+.cal-nav-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.cal-nav-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  width: 30px; height: 30px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.cal-nav-btn:hover { border-color: var(--cobalto); color: var(--soft); }
+.cal-month-lbl { font-size: 12px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; min-width: 170px; text-align: center; }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.cal-dh { background: var(--surface); padding: 7px; text-align: center; font-size: 8px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.cal-day { background: var(--bg); min-height: 86px; padding: 7px; cursor: pointer; transition: background .15s; }
+.cal-day:hover { background: var(--surface2); }
+.cal-day.other { opacity: .25; pointer-events: none; }
+.cal-day.today { background: rgba(37,99,235,.06); }
+.cal-num { font-size: 10px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+.cal-day.today .cal-num { color: var(--cobalto); font-weight: 800; }
+.cal-pchip {
+  font-size: 8px; padding: 2px 5px; margin-bottom: 2px;
+  background: rgba(37,99,235,.12); border-left: 2px solid var(--cobalto);
+  color: var(--soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer;
+}
+.cal-pchip:hover { background: rgba(37,99,235,.22); }
+
+/* ══════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════ */
+.modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(4,9,15,.94);
+  z-index: 9999; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-bg.on { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  width: 100%; max-width: 540px; max-height: 88vh; overflow-y: auto; padding: 24px;
+}
+.modal-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.modal-ttl { font-size: 9px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: var(--soft); }
+.modal-cls {
+  background: transparent; border: 1px solid var(--border); color: var(--muted);
+  width: 26px; height: 26px; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-cls:hover { color: #fff; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--surface2); border: 1px solid var(--border);
+  padding: 10px 18px; font-size: 11px; z-index: 10000;
+  transform: translateY(50px); opacity: 0; transition: all .25s;
+}
+.toast.on { transform: translateY(0); opacity: 1; }
+.toast.ok { border-color: var(--success); color: var(--success); }
+.toast.err { border-color: var(--danger); color: var(--danger); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .gen-wrap { grid-template-columns: 1fr; height: auto; }
+  .gen-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+  .result-grid.on { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .hdr { padding: 10px 14px; }
+  .gen-result, .banco-wrap, .cal-wrap { padding: 16px 14px; }
+  .cal-day { min-height: 56px; }
+  .cal-pchip { display: none; }
+  .tabs { gap: 0; }
+  .tab { padding: 7px 10px; font-size: 9px; letter-spacing: 1px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header class="hdr">
+  <div class="hdr-logo">VYNTRA <span>Intelligent Systems</span></div>
+  <div class="tabs">
+    <button class="tab on" onclick="goTab('gen',this)">Generador</button>
+    <button class="tab"    onclick="goTab('banco',this)">Banco</button>
+    <button class="tab"    onclick="goTab('cal',this)">Calendario</button>
+  </div>
+</header>
+
+<!-- ═══════════ PANEL: GENERADOR ═══════════ -->
+<section class="panel on" id="panel-gen">
+<div class="gen-wrap">
+
+  <!-- SIDEBAR -->
+  <div class="gen-sidebar">
+    <div class="sec-title">Configurar Post</div>
+
+    <div class="fld">
+      <label class="fld-lbl">Cliente / Marca</label>
+      <select class="fld-select" id="sel-cli" onchange="onCliChange()">
+        <option value="VYNTRA Intelligent Systems|agencia-ia">VYNTRA Intelligent Systems</option>
+        <option value="Cheesy Planet|restaurante">Cheesy Planet</option>
+        <option value="Ecotienda CUU|solar">Ecotienda CUU</option>
+        <option value="Santai Wellness|wellness">Santai Wellness</option>
+        <option value="Power Gym CUU|fitness">Power Gym CUU</option>
+        <option value="YK Rental|construccion">YK Rental Chihuahua</option>
+        <option value="Renov Arch|arquitectura">Renov' Arch</option>
+        <option value="_custom|">+ Nuevo cliente...</option>
+      </select>
+    </div>
+
+    <div id="custom-fields" style="display:none">
+      <div class="fld">
+        <label class="fld-lbl">Nombre del negocio</label>
+        <input class="fld-input" id="inp-cnombre" type="text" placeholder="Ej: La Bodega">
+      </div>
+      <div class="fld">
+        <label class="fld-lbl">Industria / Giro</label>
+        <input class="fld-input" id="inp-cindustria" type="text" placeholder="Ej: restaurante, clínica, gym...">
+      </div>
+    </div>
+
+    <div class="fld">
+      <label class="fld-lbl">Tipo de contenido</label>
+      <div class="chips" id="chips-tipo">
+        <button class="chip on" data-v="educativo"    onclick="pick(this,'tipo')">Educativo</button>
+        <button class="chip"    data-v="promocional"  onclick="pick(this,'tipo')">Promocional</button>
+        <button class="chip"    data-v="engagement"   onclick="pick(this,'tipo')">Engagement</button>
+        <button class="chip"    data-v="testimonio"   onclick="pick(this,'tipo')">Testimonio</button>
+        <button class="chip"    data-v="cta"          onclick="pick(this,'tipo')">CTA Directo</button>
+        <button class="chip"    data-v="bts"          onclick="pick(this,'tipo')">Behind Scenes</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="fld">
+      <label class="fld-lbl">Red social</label>
+      <div class="chips" id="chips-red">
+        <button class="chip on" data-v="Instagram" onclick="pick(this,'red')">Instagram</button>
+        <button class="chip"    data-v="Facebook"  onclick="pick(this,'red')">Facebook</button>
+        <button class="chip"    data-v="TikTok"    onclick="pick(this,'red')">TikTok</button>
+        <button class="chip"    data-v="LinkedIn"  onclick="pick(this,'red')">LinkedIn</button>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label class="fld-lbl">Tono de voz</label>
+      <div class="chips" id="chips-tono">
+        <button class="chip on" data-v="profesional"   onclick="pick(this,'tono')">Profesional</button>
+        <button class="chip"    data-v="cercano"       onclick="pick(this,'tono')">Cercano</button>
+        <button class="chip"    data-v="urgente"       onclick="pick(this,'tono')">Urgente</button>
+        <button class="chip"    data-v="inspiracional" onclick="pick(this,'tono')">Inspiracional</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="fld">
+      <label class="fld-lbl">Mensaje clave <span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted)">(opcional)</span></label>
+      <textarea class="fld-textarea" id="inp-msg" placeholder="Ej: oferta de apertura, nuevo servicio, resultado de cliente, tip semanal..."></textarea>
+    </div>
+
+    <button class="btn-gen" id="btn-gen" onclick="generarPost()">
+      <span class="btn-txt">Generar con IA →</span>
+      <div class="sp"></div>
+    </button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="gen-result">
+
+    <div class="result-empty" id="result-empty">
+      <div class="ico">◈</div>
+      <p>Configura el post y presiona<br><strong style="color:rgba(255,255,255,.65)">Generar con IA</strong></p>
+    </div>
+
+    <div class="result-grid" id="result-grid">
+
+      <!-- IG PREVIEW -->
+      <div class="ig-mock">
+        <div class="sec-title">Preview</div>
+        <div class="ig-card">
+          <div class="ig-top">
+            <div class="ig-ava" id="ig-ava">VY</div>
+            <div>
+              <div class="ig-user" id="ig-user">vyntra.ex</div>
+              <div class="ig-sub">Chihuahua, México</div>
+            </div>
+            <div class="ig-more">···</div>
+          </div>
+          <div class="ig-img" id="ig-img">
+            <div class="ig-img-txt" id="ig-img-txt">VYNTRA</div>
+            <div class="img-spin-wrap"><div class="img-spin"></div><span class="img-spin-lbl">Generando</span></div>
+            <img id="ig-img-gen" alt="">
+          </div>
+          <div class="ig-btns">
+            <span>♡ Me gusta</span><span>💬 Comentar</span><span>↗ Compartir</span>
+          </div>
+          <div class="ig-caption-box" id="ig-caption-box">
+            <strong id="ig-caption-user">vyntra.ex</strong>
+            <span id="ig-caption-txt"> —</span>
+          </div>
+          <div class="ig-tags" id="ig-tags"></div>
+        </div>
+        <button class="btn-img-gen" id="btn-img-gen" onclick="generarImagen()">✦ Generar imagen con IA</button>
+      </div>
+
+      <!-- TEXT OUTPUT -->
+      <div class="txt-panel">
+        <div class="sec-title">Contenido Generado</div>
+
+        <div class="txt-blk">
+          <div class="txt-blk-hdr">
+            <span class="txt-blk-lbl">Caption completo</span>
+            <button class="btn-copy" id="bcopy-cap" onclick="copyEl('out-caption',this)">Copiar</button>
+          </div>
+          <div class="txt-out" id="out-caption" contenteditable="true" spellcheck="false" data-ph="El caption aparecerá aquí..."></div>
+          <div class="char-count" id="char-cap">0 caracteres</div>
+        </div>
+
+        <div class="txt-blk">
+          <div class="txt-blk-hdr">
+            <span class="txt-blk-lbl">Hashtags</span>
+            <button class="btn-copy" id="bcopy-hash" onclick="copyEl('out-hashtags',this)">Copiar</button>
+          </div>
+          <div class="txt-out" id="out-hashtags" contenteditable="true" spellcheck="false" data-ph="Los hashtags aparecerán aquí..."></div>
+        </div>
+
+        <button class="btn-regen" onclick="generarPost()">↺ Regenerar</button>
+        <button class="btn-save" onclick="guardarPost()">Guardar en banco →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ PANEL: BANCO ═══════════ -->
+<section class="panel" id="panel-banco">
+<div class="banco-wrap">
+  <div class="banco-hdr">
+    <div class="sec-title" style="margin:0;padding:0;border:none">Banco de Posts</div>
+    <div class="filters" id="filters">
+      <button class="fchip on" onclick="setFilter('',this)">Todos</button>
+    </div>
+  </div>
+  <div class="posts-grid" id="posts-grid"></div>
+  <div class="banco-empty" id="banco-empty" style="display:none">
+    No hay posts guardados aún.<br>Genera tu primer post en el <strong style="color:rgba(255,255,255,.65)">Generador</strong> y guárdalo aquí.
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ PANEL: CALENDARIO ═══════════ -->
+<section class="panel" id="panel-cal">
+<div class="cal-wrap">
+  <div class="cal-nav-row">
+    <div class="sec-title" style="margin:0;padding:0;border:none;flex:1">Calendario Editorial</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="cal-nav-btn" onclick="moveMonth(-1)">‹</button>
+      <div class="cal-month-lbl" id="cal-lbl"></div>
+      <button class="cal-nav-btn" onclick="moveMonth(1)">›</button>
+    </div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+</section>
+
+<!-- ═══════════ MODAL: DETALLE POST ═══════════ -->
+<div class="modal-bg" id="mod-post" onclick="closeMod('mod-post',event)">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-ttl" id="mod-post-ttl">Post</span>
+      <button class="modal-cls" onclick="closeMod('mod-post')">✕</button>
+    </div>
+    <div id="mod-post-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════ MODAL: ASIGNAR FECHA ═══════════ -->
+<div class="modal-bg" id="mod-fecha" onclick="closeMod('mod-fecha',event)">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr">
+      <span class="modal-ttl" id="mod-fecha-ttl">Asignar fecha</span>
+      <button class="modal-cls" onclick="closeMod('mod-fecha')">✕</button>
+    </div>
+    <div id="mod-fecha-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+
+const API = (localStorage.getItem('vyntra_api_url') || 'http://localhost:3000') + '/api/chat';
+
+const state = { tipo: 'educativo', red: 'Instagram', tono: 'profesional' };
+let currentPost = null;
+let filterCli = '';
+let calY = new Date().getFullYear();
+let calM = new Date().getMonth();
+
+const INDUSTRY_COLORS = {
+  'agencia-ia':   { from: '#0D1F40', to: '#1e3a7a', accent: '#2563EB' },
+  'restaurante':  { from: '#1a0c02', to: '#3d2000', accent: '#d97706' },
+  'solar':        { from: '#061a08', to: '#0d3a12', accent: '#16a34a' },
+  'wellness':     { from: '#100a1f', to: '#2d1a4a', accent: '#7c3aed' },
+  'fitness':      { from: '#1a0404', to: '#400a0a', accent: '#dc2626' },
+  'construccion': { from: '#101010', to: '#252520', accent: '#78716c' },
+  'arquitectura': { from: '#090c12', to: '#1a2032', accent: '#475569' },
+};
+
+const INDUSTRY_IMG_PROMPTS = {
+  'agencia-ia':   'sleek digital marketing analytics dashboard, glowing blue data charts, dark navy background, artificial intelligence, professional corporate',
+  'restaurante':  'delicious gourmet food close-up, warm restaurant lighting, rustic table, appetizing Mexican cuisine, food photography',
+  'solar':        'solar panels on rooftop, bright blue sky, clean energy technology, green sustainability, modern house Chihuahua Mexico',
+  'wellness':     'luxury spa interior, soft candles, zen stones, purple ambient lighting, relaxation, massage table, serene',
+  'fitness':      'gym workout, powerful athlete lifting weights, dramatic red lighting, fitness equipment, motivational',
+  'construccion': 'heavy construction equipment, excavator, building site, industrial machinery, workers, blue sky Mexico',
+  'arquitectura': 'modern luxury residential architecture, clean white lines, large windows, swimming pool, elegant exterior design',
+};
+
+// ═══════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════
+
+function goTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('panel-' + name).classList.add('on');
+  if (name === 'banco') renderBanco();
+  if (name === 'cal')   renderCal();
+}
+
+// ═══════════════════════════════════════════════════
+// FORM HELPERS
+// ═══════════════════════════════════════════════════
+
+function pick(el, group) {
+  document.querySelectorAll(`#chips-${group} .chip`).forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  state[group] = el.dataset.v;
+}
+
+function onCliChange() {
+  const val = document.getElementById('sel-cli').value;
+  const isCustom = val.startsWith('_custom');
+  document.getElementById('custom-fields').style.display = isCustom ? 'block' : 'none';
+  if (!isCustom) updatePreviewMeta();
+}
+
+function getClienteInfo() {
+  const val = document.getElementById('sel-cli').value;
+  if (val.startsWith('_custom')) {
+    return {
+      nombre: document.getElementById('inp-cnombre').value.trim() || 'Mi Negocio',
+      industria: document.getElementById('inp-cindustria').value.trim() || 'negocio local',
+      key: 'agencia-ia'
+    };
+  }
+  const [nombre, key] = val.split('|');
+  const labels = { 'agencia-ia':'agencia de marketing con IA', restaurante:'restaurante', solar:'energía solar', wellness:'spa y bienestar', fitness:'gimnasio y fitness', construccion:'renta de equipo construcción', arquitectura:'arquitectura residencial' };
+  return { nombre, industria: labels[key] || key, key };
+}
+
+function updatePreviewMeta() {
+  const { nombre, key } = getClienteInfo();
+  const initials = nombre.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  document.getElementById('ig-ava').textContent = initials;
+  const handle = nombre.toLowerCase().replace(/[^a-z0-9]/g,'').substring(0,20);
+  document.getElementById('ig-user').textContent = handle;
+  document.getElementById('ig-caption-user').textContent = handle;
+  document.getElementById('ig-img-txt').textContent = nombre.toUpperCase();
+  const c = INDUSTRY_COLORS[key] || INDUSTRY_COLORS['agencia-ia'];
+  document.getElementById('ig-img').style.background = `linear-gradient(135deg, ${c.from} 0%, ${c.to} 100%)`;
+  document.getElementById('ig-img-txt').style.color = c.accent + '30';
+}
+
+// ═══════════════════════════════════════════════════
+// GENERATE
+// ═══════════════════════════════════════════════════
+
+async function generarPost() {
+  const btn = document.getElementById('btn-gen');
+  btn.disabled = true; btn.classList.add('loading');
+
+  const cli = getClienteInfo();
+  const msg = document.getElementById('inp-msg').value.trim();
+  const prompt = buildPrompt(cli.nombre, cli.industria, state.tipo, state.red, state.tono, msg);
+
+  try {
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    const txt = data.respuesta || '';
+
+    const match = txt.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Sin JSON en respuesta');
+    const p = JSON.parse(match[0]);
+
+    currentPost = {
+      id: Date.now(),
+      cliente: cli.nombre,
+      industria: cli.key,
+      tipo: state.tipo,
+      red: state.red,
+      tono: state.tono,
+      mensaje: msg,
+      hook: (p.hook || '').trim(),
+      cuerpo: (p.cuerpo || '').trim(),
+      cta: (p.cta || '').trim(),
+      hashtags: Array.isArray(p.hashtags) ? p.hashtags : [],
+      generado: new Date().toISOString(),
+      publicar: null
+    };
+
+    renderResult(currentPost);
+    toast('Post generado', 'ok');
+  } catch(e) {
+    console.error(e);
+    toast('Error: verifica que el dashboard esté activo (localhost:3000)', 'err');
+  }
+
+  btn.disabled = false; btn.classList.remove('loading');
+}
+
+function buildPrompt(cliente, industria, tipo, red, tono, msg) {
+  const tipoDesc = {
+    educativo:   'educativo — enseña algo valioso, tip o dato concreto',
+    promocional: 'promocional — presenta un servicio o producto con beneficios claros y precio/oferta si aplica',
+    engagement:  'de engagement — genera interacción con una pregunta directa o debate que invite a comentar',
+    testimonio:  'de testimonio — presenta un resultado real o caso de éxito con datos específicos',
+    cta:         'de CTA directo — llamada a la acción fuerte, genera urgencia o escasez concreta',
+    bts:         'behind the scenes — muestra el proceso interno, humaniza la marca, genera confianza'
+  }[tipo] || tipo;
+
+  const tonoDesc = {
+    profesional:   'profesional y directo, hechos sobre adjetivos',
+    cercano:       'cercano y conversacional, como si hablaras con un conocido de negocios',
+    urgente:       'urgente con sentido de escasez o fecha límite específica',
+    inspiracional: 'inspiracional, aspiracional, con contraste antes/después'
+  }[tono] || tono;
+
+  return `Eres el estratega de contenido de VYNTRA Intelligent Systems para negocios del norte de México.
+
+Genera un post ${tipoDesc} para ${red}. Cliente: "${cliente}" (industria: ${industria}).
+Tono: ${tonoDesc}.${msg ? `\nMensaje clave obligatorio: "${msg}".` : ''}
+
+REGLAS:
+- Voz: Precisa · Directa · Confiable · Norteña
+- PROHIBIDO: Potenciar, Sinergia, Disruptivo, Ecosistema, Empoderamos, Soluciones integrales, Transformación digital, Innovación
+- PRIORIZAR: Rendimiento, Retorno, Decisión, Datos, Calculado, Medible, Resultado, Inversión
+- Hook: engancha en las primeras 3 palabras, máx 12 palabras total
+- Cuerpo: párrafos cortos (1-3 líneas), máx 200 palabras, usa \\n para saltos
+- Hashtags: 15-20 tags. Siempre incluir #chihuahua #cuu #chihuahuamexico. Mix: nicho + local + general
+
+Responde ÚNICAMENTE con JSON exacto, sin texto antes ni después:
+{
+  "hook": "Primera línea gancho",
+  "cuerpo": "Cuerpo del post con \\n donde corresponda",
+  "cta": "Llamada a la acción (1 línea directa)",
+  "hashtags": ["#tag1","#tag2","#tag3"]
+}`;
+}
+
+function renderResult(p) {
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-grid').classList.add('on');
+
+  updatePreviewMeta();
+
+  const caption = `${p.hook}\n\n${p.cuerpo}\n\n${p.cta}`;
+  const hashStr = p.hashtags.join(' ');
+
+  // IG preview
+  document.getElementById('ig-caption-txt').textContent = ' ' + p.hook;
+  document.getElementById('ig-tags').textContent = p.hashtags.slice(0,8).join(' ');
+
+  // Editable text
+  const capEl = document.getElementById('out-caption');
+  capEl.textContent = caption;
+  document.getElementById('out-hashtags').textContent = hashStr;
+  updateCharCount(capEl);
+}
+
+function updateCharCount(el) {
+  const n = el.textContent.length;
+  document.getElementById('char-cap').textContent = `${n} caracteres${n > 2200 ? ' ⚠ Instagram máx ~2200' : ''}`;
+}
+
+document.getElementById('out-caption').addEventListener('input', function() { updateCharCount(this); });
+
+// ═══════════════════════════════════════════════════
+// IMAGE GENERATION (Pollinations.ai — FLUX-schnell, gratis)
+// ═══════════════════════════════════════════════════
+
+function generarImagen() {
+  if (!currentPost) { toast('Genera un post primero', 'err'); return; }
+
+  const btn    = document.getElementById('btn-img-gen');
+  const igImg  = document.getElementById('ig-img');
+  const imgEl  = document.getElementById('ig-img-gen');
+
+  btn.disabled = true;
+  btn.textContent = '⟳ Generando imagen...';
+  igImg.classList.remove('img-loaded');
+  igImg.classList.add('img-loading');
+
+  const basePrompt = INDUSTRY_IMG_PROMPTS[currentPost.industria] || 'professional business scene, modern, Mexico';
+  const fullPrompt = `${basePrompt}. ${currentPost.hook}. Square Instagram post, professional photography, vibrant, high resolution`;
+  const seed = Math.floor(Math.random() * 99999);
+  const url  = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=1024&height=1024&model=flux-schnell&nologo=true&seed=${seed}`;
+
+  imgEl.src = '';
+  imgEl.onload = () => {
+    igImg.classList.remove('img-loading');
+    igImg.classList.add('img-loaded');
+    currentPost.imagen = url;
+    btn.disabled = false;
+    btn.textContent = '↺ Regenerar imagen';
+    toast('Imagen generada ✓', 'ok');
+  };
+  imgEl.onerror = () => {
+    igImg.classList.remove('img-loading');
+    btn.disabled = false;
+    btn.textContent = '✦ Generar imagen con IA';
+    toast('Error al generar imagen. Intenta de nuevo.', 'err');
+  };
+  imgEl.src = url;
+}
+
+// ═══════════════════════════════════════════════════
+// COPY
+// ═══════════════════════════════════════════════════
+
+async function copyEl(elId, btn) {
+  const text = document.getElementById(elId).textContent;
+  await navigator.clipboard.writeText(text);
+  btn.textContent = 'Copiado ✓'; btn.classList.add('ok');
+  setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 1800);
+}
+
+// ═══════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════
+
+const LS = 'vyntra_posts_v2';
+const getPosts = () => JSON.parse(localStorage.getItem(LS) || '[]');
+const setPosts = d => localStorage.setItem(LS, JSON.stringify(d));
+
+function guardarPost() {
+  if (!currentPost) { toast('Genera un post primero', 'err'); return; }
+  const capEl = document.getElementById('out-caption');
+  const hashEl = document.getElementById('out-hashtags');
+  // Sync edits back to currentPost
+  const txt = capEl.textContent.split('\n\n');
+  if (txt.length >= 1) currentPost.hook = txt[0].trim();
+  if (txt.length >= 2) currentPost.cuerpo = txt.slice(1,-1).join('\n\n').trim();
+  if (txt.length >= 3) currentPost.cta = txt[txt.length-1].trim();
+  currentPost.hashtags = hashEl.textContent.split(/\s+/).filter(t => t.startsWith('#'));
+
+  const posts = getPosts();
+  if (posts.find(p => p.id === currentPost.id)) { toast('Ya está guardado', 'err'); return; }
+  posts.unshift(currentPost);
+  setPosts(posts);
+  toast('Guardado en el banco ✓', 'ok');
+}
+
+function deletePost(id) {
+  setPosts(getPosts().filter(p => p.id !== id));
+  closeMod('mod-post');
+  renderBanco();
+}
+
+function unassignPost(id) {
+  const posts = getPosts();
+  const i = posts.findIndex(p => p.id === id);
+  if (i > -1) { posts[i].publicar = null; setPosts(posts); }
+}
+
+// ═══════════════════════════════════════════════════
+// BANCO
+// ═══════════════════════════════════════════════════
+
+function setFilter(cli, el) {
+  filterCli = cli;
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  renderBanco();
+}
+
+function renderBanco() {
+  const all = getPosts();
+  const shown = filterCli ? all.filter(p => p.cliente === filterCli) : all;
+
+  // Rebuild filter chips
+  const clientes = [...new Set(all.map(p => p.cliente))];
+  const fc = document.getElementById('filters');
+  fc.innerHTML = `<button class="fchip ${!filterCli?'on':''}" onclick="setFilter('',this)">Todos (${all.length})</button>`;
+  clientes.forEach(c => {
+    const cnt = all.filter(p=>p.cliente===c).length;
+    fc.innerHTML += `<button class="fchip ${filterCli===c?'on':''}" onclick="setFilter('${c.replace(/'/g,"\\'")}',this)">${c} (${cnt})</button>`;
+  });
+
+  const empty = document.getElementById('banco-empty');
+  const grid  = document.getElementById('posts-grid');
+
+  if (shown.length === 0) { empty.style.display = 'block'; grid.innerHTML = ''; return; }
+  empty.style.display = 'none';
+
+  const redIco = { Instagram:'📷', Facebook:'👤', TikTok:'🎵', LinkedIn:'💼' };
+  grid.innerHTML = shown.map(p => {
+    const fecha = new Date(p.generado).toLocaleDateString('es-MX', {day:'numeric',month:'short'});
+    const icon  = redIco[p.red] || '📱';
+    const sched = p.publicar ? `📅 ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'})}` : '';
+    return `<div class="pcard" onclick="openPostMod(${p.id})">
+      <div class="pcard-meta">
+        <span class="pcard-cli">${p.cliente}</span>
+        <span class="pcard-tipo">${icon} ${p.tipo}</span>
+      </div>
+      ${p.imagen ? `<img src="${p.imagen}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:8px;border:1px solid var(--border2)" loading="lazy">` : ''}
+      <div class="pcard-hook">${esc(p.hook)}</div>
+      <div class="pcard-prev">${esc(p.cuerpo)}</div>
+      <div class="pcard-foot">
+        <span class="pcard-date">${fecha}${sched ? ' · '+sched : ''}</span>
+        <div class="pcard-acts">
+          <button class="ico-btn" title="Asignar al calendario" onclick="event.stopPropagation();openFechaMod(${p.id})">📅</button>
+          <button class="ico-btn del" title="Eliminar" onclick="event.stopPropagation();deletePost(${p.id})">×</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openPostMod(id) {
+  const p = getPosts().find(x => x.id === id);
+  if (!p) return;
+  const cap = `${p.hook}\n\n${p.cuerpo}\n\n${p.cta}`;
+  const hash = p.hashtags.join(' ');
+  const redIco = { Instagram:'📷', Facebook:'👤', TikTok:'🎵', LinkedIn:'💼' };
+  const sched = p.publicar ? `<span>📅 ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'long'})}</span>` : '';
+
+  document.getElementById('mod-post-ttl').textContent = `${p.cliente} · ${p.tipo}`;
+  document.getElementById('mod-post-body').innerHTML = `
+    ${p.imagen ? `<img src="${p.imagen}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:14px;border:1px solid var(--border)" loading="lazy">` : ''}
+    <div style="display:flex;gap:12px;font-size:10px;color:var(--muted);margin-bottom:14px;flex-wrap:wrap">
+      <span>${redIco[p.red]||'📱'} ${p.red}</span><span>·</span>
+      <span>${p.tono}</span><span>·</span>
+      <span>${new Date(p.generado).toLocaleDateString('es-MX')}</span>
+      ${sched ? '<span>·</span>'+sched : ''}
+    </div>
+    <div class="txt-blk" style="margin-bottom:12px">
+      <div class="txt-blk-hdr">
+        <span class="txt-blk-lbl">Caption completo</span>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.closest('.txt-blk').querySelector('pre').textContent);this.textContent='Copiado ✓';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
+      </div>
+      <pre style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.72);white-space:pre-wrap;max-height:200px;overflow-y:auto;font-family:Inter,sans-serif">${esc(cap)}</pre>
+    </div>
+    <div class="txt-blk" style="margin-bottom:16px">
+      <div class="txt-blk-hdr">
+        <span class="txt-blk-lbl">Hashtags</span>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText('${hash.replace(/'/g,"\\'")}');this.textContent='Copiado ✓';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
+      </div>
+      <div style="font-size:11px;color:var(--soft);line-height:1.7;word-break:break-all">${esc(hash)}</div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-save" style="flex:1" onclick="closeMod('mod-post');openFechaMod(${id})">Asignar al calendario</button>
+      <button onclick="deletePost(${id})" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:0 16px;cursor:pointer;font-family:Inter,sans-serif;font-size:11px;transition:all .15s" onmouseover="this.style.borderColor='#ef4444';this.style.color='#ef4444'" onmouseout="this.style.borderColor='rgba(37,99,235,.16)';this.style.color='var(--muted)'">Eliminar</button>
+    </div>`;
+  document.getElementById('mod-post').classList.add('on');
+}
+
+// ═══════════════════════════════════════════════════
+// ASIGNAR FECHA
+// ═══════════════════════════════════════════════════
+
+function openFechaMod(postId) {
+  const p = getPosts().find(x => x.id === postId);
+  if (!p) return;
+
+  const today = new Date();
+  let rows = '';
+  for (let i = 0; i < 35; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    const label = d.toLocaleDateString('es-MX', {weekday:'short', day:'numeric', month:'long'});
+    const isWeekend = d.getDay() === 0 || d.getDay() === 6;
+    rows += `<button onclick="assignDate(${postId},'${ds}')" style="
+      background:${p.publicar===ds?'rgba(37,99,235,.15)':'transparent'};
+      border:1px solid ${p.publicar===ds?'var(--cobalto)':'var(--border)'};
+      color:${isWeekend?'var(--soft)':'#fff'}; padding:9px 12px; text-align:left;
+      cursor:pointer; font-family:Inter,sans-serif; font-size:12px; width:100%;
+      display:flex; align-items:center; justify-content:space-between;
+    " onmouseover="this.style.borderColor='var(--cobalto)'" onmouseout="this.style.borderColor='${p.publicar===ds?'var(--cobalto)':'var(--border)'}'">
+      <span>${label}</span>
+      ${isWeekend ? '<span style="font-size:9px;color:var(--soft)">FIN DE SEMANA</span>' : ''}
+      ${p.publicar===ds ? '<span style="font-size:9px;color:var(--soft)">ASIGNADO</span>' : ''}
+    </button>`;
+  }
+
+  document.getElementById('mod-fecha-ttl').textContent = `Asignar: ${p.hook.slice(0,35)}...`;
+  document.getElementById('mod-fecha-body').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:6px;max-height:360px;overflow-y:auto">${rows}</div>
+    ${p.publicar ? `<button onclick="assignDate(${postId},null)" style="margin-top:12px;width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);padding:9px;cursor:pointer;font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase">Quitar fecha</button>` : ''}`;
+  document.getElementById('mod-fecha').classList.add('on');
+}
+
+function assignDate(postId, dateStr) {
+  const posts = getPosts();
+  const i = posts.findIndex(p => p.id === postId);
+  if (i > -1) { posts[i].publicar = dateStr; setPosts(posts); }
+  closeMod('mod-fecha');
+  renderBanco();
+  renderCal();
+  toast(dateStr ? 'Fecha asignada al calendario ✓' : 'Fecha eliminada', 'ok');
+}
+
+// ═══════════════════════════════════════════════════
+// CALENDARIO
+// ═══════════════════════════════════════════════════
+
+function moveMonth(d) {
+  calM += d;
+  if (calM > 11) { calM = 0; calY++; }
+  if (calM <  0) { calM = 11; calY--; }
+  renderCal();
+}
+
+function renderCal() {
+  const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  document.getElementById('cal-lbl').textContent = `${MONTHS[calM]} ${calY}`;
+
+  const first = new Date(calY, calM, 1).getDay();
+  const total = new Date(calY, calM+1, 0).getDate();
+  const prevTotal = new Date(calY, calM, 0).getDate();
+  const today = new Date();
+  const posts = getPosts();
+
+  const DAYS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  let h = DAYS.map(d=>`<div class="cal-dh">${d}</div>`).join('');
+
+  // Prev month pads
+  for (let i = 0; i < first; i++) {
+    h += `<div class="cal-day other"><div class="cal-num">${prevTotal - first + 1 + i}</div></div>`;
+  }
+
+  // Current month
+  for (let d = 1; d <= total; d++) {
+    const ds = `${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = today.getFullYear()===calY && today.getMonth()===calM && today.getDate()===d;
+    const dayPosts = posts.filter(p => p.publicar === ds);
+    const chips = dayPosts.slice(0,3).map(p =>
+      `<div class="cal-pchip" onclick="event.stopPropagation();openPostMod(${p.id})" title="${p.cliente}: ${p.hook}">${p.cliente.split(' ')[0]}</div>`
+    ).join('');
+    const more = dayPosts.length > 3 ? `<div style="font-size:8px;color:var(--muted)">+${dayPosts.length-3}</div>` : '';
+
+    h += `<div class="cal-day${isToday?' today':''}" onclick="clickDay('${ds}')">
+      <div class="cal-num">${d}</div>
+      ${chips}${more}
+    </div>`;
+  }
+
+  // Next month pads
+  const rem = 42 - first - total;
+  for (let i = 1; i <= rem; i++) {
+    h += `<div class="cal-day other"><div class="cal-num">${i}</div></div>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = h;
+}
+
+function clickDay(ds) {
+  const posts = getPosts();
+  const dayPosts = posts.filter(p => p.publicar === ds);
+  const free = posts.filter(p => !p.publicar);
+  const d = new Date(ds + 'T12:00:00');
+  const label = d.toLocaleDateString('es-MX', {weekday:'long', day:'numeric', month:'long'});
+
+  let body = `<p style="font-size:12px;color:var(--muted);margin-bottom:14px">${label}</p>`;
+
+  if (dayPosts.length > 0) {
+    body += `<div style="font-size:8px;font-weight:800;letter-spacing:2px;color:var(--soft);margin-bottom:8px">PROGRAMADOS</div>`;
+    body += dayPosts.map(p => `
+      <div style="background:rgba(37,99,235,.07);border-left:2px solid var(--cobalto);padding:8px 12px;margin-bottom:6px;cursor:pointer;font-size:12px" onclick="closeMod('mod-fecha');openPostMod(${p.id})">
+        <div style="font-size:9px;color:var(--soft);font-weight:800;margin-bottom:2px">${p.cliente} · ${p.red}</div>
+        <div>${esc(p.hook)}</div>
+        <button onclick="event.stopPropagation();assignDate(${p.id},null)" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:9px;font-family:Inter;padding:2px 8px;cursor:pointer;letter-spacing:1px;text-transform:uppercase">Quitar</button>
+      </div>`).join('');
+    body += `<hr class="divider">`;
+  }
+
+  if (free.length > 0) {
+    body += `<div style="font-size:8px;font-weight:800;letter-spacing:2px;color:var(--soft);margin-bottom:8px">AGREGAR AL DÍA</div>`;
+    body += `<div style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto">`;
+    body += free.map(p => `
+      <button onclick="assignDate(${p.id},'${ds}')" style="background:transparent;border:1px solid var(--border);color:#fff;padding:9px 12px;text-align:left;cursor:pointer;font-family:Inter,sans-serif;font-size:12px;width:100%;transition:all .15s" onmouseover="this.style.borderColor='var(--cobalto)'" onmouseout="this.style.borderColor='rgba(37,99,235,.16)'">
+        <span style="font-size:9px;color:var(--soft);font-weight:800">${p.cliente}</span> — ${esc(p.hook.slice(0,40))}
+      </button>`).join('');
+    body += `</div>`;
+  } else if (dayPosts.length === 0) {
+    body += `<p style="font-size:12px;color:var(--muted)">No hay posts sin fecha en el banco.<br>Genera un post y guárdalo primero.</p>`;
+  }
+
+  document.getElementById('mod-fecha-ttl').textContent = label;
+  document.getElementById('mod-fecha-body').innerHTML = body;
+  document.getElementById('mod-fecha').classList.add('on');
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════
+
+function closeMod(id, e) {
+  if (e && e.target.id !== id) return;
+  document.getElementById(id).classList.remove('on');
+}
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+
+let toastTimer;
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = (type==='ok'?'✓ ':type==='err'?'⚠ ':'') + msg;
+  el.className = 'toast on ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = 'toast', 2600);
+}
+
+// ═══════════════════════════════════════════════════
+// UTIL
+// ═══════════════════════════════════════════════════
+
+function esc(s='') {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+
+updatePreviewMeta();
+
+</script>
+</body>
+</html>
