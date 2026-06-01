@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VYNTRA · Generador de Contenido</title>
+<title>VYNTRA Â· Generador de Contenido</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,10 +26,10 @@
 
 body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min-height: 100vh; }
 
-/* ── SCROLLBAR ── */
+/* â”€â”€ SCROLLBAR â”€â”€ */
 ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--border); }
 
-/* ── HEADER ── */
+/* â”€â”€ HEADER â”€â”€ */
 .hdr {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--border);
@@ -38,7 +38,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 .hdr-logo { font-family: Georgia, serif; font-weight: 700; font-size: 15px; letter-spacing: 4px; color: #fff; }
 .hdr-logo span { font-size: 8px; font-family: 'Inter', sans-serif; font-weight: 400; letter-spacing: 2.5px; color: var(--soft); display: block; margin-top: 1px; }
 
-/* ── TABS ── */
+/* â”€â”€ TABS â”€â”€ */
 .tabs { display: flex; gap: 2px; }
 .tab {
   background: transparent; border: 1px solid transparent; color: var(--muted);
@@ -51,9 +51,9 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 
 .panel { display: none; } .panel.on { display: block; }
 
-/* ══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAB GENERADOR
-══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .gen-wrap {
   display: grid; grid-template-columns: 360px 1fr;
   height: calc(100vh - 53px);
@@ -112,7 +112,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 .btn-gen.loading .sp { display: block; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── RESULT AREA ── */
+/* â”€â”€ RESULT AREA â”€â”€ */
 .gen-result { padding: 24px 28px; overflow-y: auto; }
 
 .result-empty {
@@ -200,9 +200,9 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 }
 .btn-regen:hover { border-color: var(--cobalto); color: var(--soft); }
 
-/* ══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAB BANCO
-══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .banco-wrap { padding: 24px 28px; }
 .banco-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
 .filters { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -238,9 +238,9 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 
 .banco-empty { text-align: center; padding: 72px 20px; color: var(--muted); font-size: 12px; line-height: 1.7; }
 
-/* ══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TAB CALENDARIO
-══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .cal-wrap { padding: 24px 28px; }
 .cal-nav-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
 .cal-nav-btn {
@@ -265,9 +265,9 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 }
 .cal-pchip:hover { background: rgba(37,99,235,.22); }
 
-/* ══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MODAL
-══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .modal-bg {
   display: none; position: fixed; inset: 0; background: rgba(4,9,15,.94);
   z-index: 9999; align-items: center; justify-content: center; padding: 20px;
@@ -286,7 +286,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 }
 .modal-cls:hover { color: #fff; }
 
-/* ── TOAST ── */
+/* â”€â”€ TOAST â”€â”€ */
 .toast {
   position: fixed; bottom: 20px; right: 20px;
   background: var(--surface2); border: 1px solid var(--border);
@@ -297,7 +297,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 .toast.ok { border-color: var(--success); color: var(--success); }
 .toast.err { border-color: var(--danger); color: var(--danger); }
 
-/* ── RESPONSIVE ── */
+/* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 960px) {
   .gen-wrap { grid-template-columns: 1fr; height: auto; }
   .gen-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
@@ -315,7 +315,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 </head>
 <body>
 
-<!-- ═══════════ HEADER ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• HEADER â•â•â•â•â•â•â•â•â•â•â• -->
 <header class="hdr">
   <div class="hdr-logo">VYNTRA <span>Intelligent Systems</span></div>
   <div class="tabs">
@@ -325,7 +325,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
   </div>
 </header>
 
-<!-- ═══════════ PANEL: GENERADOR ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• PANEL: GENERADOR â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="panel on" id="panel-gen">
 <div class="gen-wrap">
 
@@ -354,7 +354,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
       </div>
       <div class="fld">
         <label class="fld-lbl">Industria / Giro</label>
-        <input class="fld-input" id="inp-cindustria" type="text" placeholder="Ej: restaurante, clínica, gym...">
+        <input class="fld-input" id="inp-cindustria" type="text" placeholder="Ej: restaurante, clÃ­nica, gym...">
       </div>
     </div>
 
@@ -400,7 +400,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
     </div>
 
     <button class="btn-gen" id="btn-gen" onclick="generarPost()">
-      <span class="btn-txt">Generar con IA →</span>
+      <span class="btn-txt">Generar con IA â†’</span>
       <div class="sp"></div>
     </button>
   </div>
@@ -409,7 +409,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
   <div class="gen-result">
 
     <div class="result-empty" id="result-empty">
-      <div class="ico">◈</div>
+      <div class="ico">â—ˆ</div>
       <p>Configura el post y presiona<br><strong style="color:rgba(255,255,255,.65)">Generar con IA</strong></p>
     </div>
 
@@ -423,9 +423,9 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
             <div class="ig-ava" id="ig-ava">VY</div>
             <div>
               <div class="ig-user" id="ig-user">vyntra.ex</div>
-              <div class="ig-sub">Chihuahua, México</div>
+              <div class="ig-sub">Chihuahua, MÃ©xico</div>
             </div>
-            <div class="ig-more">···</div>
+            <div class="ig-more">Â·Â·Â·</div>
           </div>
           <div class="ig-img" id="ig-img">
             <div class="ig-img-txt" id="ig-img-txt">VYNTRA</div>
@@ -433,15 +433,15 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
             <img id="ig-img-gen" alt="">
           </div>
           <div class="ig-btns">
-            <span>♡ Me gusta</span><span>💬 Comentar</span><span>↗ Compartir</span>
+            <span>â™¡ Me gusta</span><span>ðŸ’¬ Comentar</span><span>â†— Compartir</span>
           </div>
           <div class="ig-caption-box" id="ig-caption-box">
             <strong id="ig-caption-user">vyntra.ex</strong>
-            <span id="ig-caption-txt"> —</span>
+            <span id="ig-caption-txt"> â€”</span>
           </div>
           <div class="ig-tags" id="ig-tags"></div>
         </div>
-        <button class="btn-img-gen" id="btn-img-gen" onclick="generarImagen()">✦ Generar imagen con IA</button>
+        <button class="btn-img-gen" id="btn-img-gen" onclick="generarImagen()">âœ¦ Generar imagen con IA</button>
       </div>
 
       <!-- TEXT OUTPUT -->
@@ -453,7 +453,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
             <span class="txt-blk-lbl">Caption completo</span>
             <button class="btn-copy" id="bcopy-cap" onclick="copyEl('out-caption',this)">Copiar</button>
           </div>
-          <div class="txt-out" id="out-caption" contenteditable="true" spellcheck="false" data-ph="El caption aparecerá aquí..."></div>
+          <div class="txt-out" id="out-caption" contenteditable="true" spellcheck="false" data-ph="El caption aparecerÃ¡ aquÃ­..."></div>
           <div class="char-count" id="char-cap">0 caracteres</div>
         </div>
 
@@ -462,11 +462,11 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
             <span class="txt-blk-lbl">Hashtags</span>
             <button class="btn-copy" id="bcopy-hash" onclick="copyEl('out-hashtags',this)">Copiar</button>
           </div>
-          <div class="txt-out" id="out-hashtags" contenteditable="true" spellcheck="false" data-ph="Los hashtags aparecerán aquí..."></div>
+          <div class="txt-out" id="out-hashtags" contenteditable="true" spellcheck="false" data-ph="Los hashtags aparecerÃ¡n aquÃ­..."></div>
         </div>
 
-        <button class="btn-regen" onclick="generarPost()">↺ Regenerar</button>
-        <button class="btn-save" onclick="guardarPost()">Guardar en banco →</button>
+        <button class="btn-regen" onclick="generarPost()">â†º Regenerar</button>
+        <button class="btn-save" onclick="guardarPost()">Guardar en banco â†’</button>
       </div>
 
     </div>
@@ -474,7 +474,7 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 </div>
 </section>
 
-<!-- ═══════════ PANEL: BANCO ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• PANEL: BANCO â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="panel" id="panel-banco">
 <div class="banco-wrap">
   <div class="banco-hdr">
@@ -485,43 +485,43 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
   </div>
   <div class="posts-grid" id="posts-grid"></div>
   <div class="banco-empty" id="banco-empty" style="display:none">
-    No hay posts guardados aún.<br>Genera tu primer post en el <strong style="color:rgba(255,255,255,.65)">Generador</strong> y guárdalo aquí.
+    No hay posts guardados aÃºn.<br>Genera tu primer post en el <strong style="color:rgba(255,255,255,.65)">Generador</strong> y guÃ¡rdalo aquÃ­.
   </div>
 </div>
 </section>
 
-<!-- ═══════════ PANEL: CALENDARIO ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• PANEL: CALENDARIO â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="panel" id="panel-cal">
 <div class="cal-wrap">
   <div class="cal-nav-row">
     <div class="sec-title" style="margin:0;padding:0;border:none;flex:1">Calendario Editorial</div>
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="cal-nav-btn" onclick="moveMonth(-1)">‹</button>
+      <button class="cal-nav-btn" onclick="moveMonth(-1)">â€¹</button>
       <div class="cal-month-lbl" id="cal-lbl"></div>
-      <button class="cal-nav-btn" onclick="moveMonth(1)">›</button>
+      <button class="cal-nav-btn" onclick="moveMonth(1)">â€º</button>
     </div>
   </div>
   <div class="cal-grid" id="cal-grid"></div>
 </div>
 </section>
 
-<!-- ═══════════ MODAL: DETALLE POST ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• MODAL: DETALLE POST â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="modal-bg" id="mod-post" onclick="closeMod('mod-post',event)">
   <div class="modal">
     <div class="modal-hdr">
       <span class="modal-ttl" id="mod-post-ttl">Post</span>
-      <button class="modal-cls" onclick="closeMod('mod-post')">✕</button>
+      <button class="modal-cls" onclick="closeMod('mod-post')">âœ•</button>
     </div>
     <div id="mod-post-body"></div>
   </div>
 </div>
 
-<!-- ═══════════ MODAL: ASIGNAR FECHA ═══════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â• MODAL: ASIGNAR FECHA â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="modal-bg" id="mod-fecha" onclick="closeMod('mod-fecha',event)">
   <div class="modal" style="max-width:420px">
     <div class="modal-hdr">
       <span class="modal-ttl" id="mod-fecha-ttl">Asignar fecha</span>
-      <button class="modal-cls" onclick="closeMod('mod-fecha')">✕</button>
+      <button class="modal-cls" onclick="closeMod('mod-fecha')">âœ•</button>
     </div>
     <div id="mod-fecha-body"></div>
   </div>
@@ -530,11 +530,11 @@ body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; min
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // STATE
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-const API = (localStorage.getItem('vyntra_api_url') || 'http://localhost:3000') + '/api/chat';
+const API = (localStorage.getItem('vyntra_api_url') || 'https://army-omission-drearily.ngrok-free.dev') + '/api/chat';
 
 const state = { tipo: 'educativo', red: 'Instagram', tono: 'profesional' };
 let currentPost = null;
@@ -562,9 +562,9 @@ const INDUSTRY_IMG_PROMPTS = {
   'arquitectura': 'modern luxury residential architecture, clean white lines, large windows, swimming pool, elegant exterior design',
 };
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TABS
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function goTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
@@ -575,9 +575,9 @@ function goTab(name, el) {
   if (name === 'cal')   renderCal();
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // FORM HELPERS
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function pick(el, group) {
   document.querySelectorAll(`#chips-${group} .chip`).forEach(c => c.classList.remove('on'));
@@ -602,7 +602,7 @@ function getClienteInfo() {
     };
   }
   const [nombre, key] = val.split('|');
-  const labels = { 'agencia-ia':'agencia de marketing con IA', restaurante:'restaurante', solar:'energía solar', wellness:'spa y bienestar', fitness:'gimnasio y fitness', construccion:'renta de equipo construcción', arquitectura:'arquitectura residencial' };
+  const labels = { 'agencia-ia':'agencia de marketing con IA', restaurante:'restaurante', solar:'energÃ­a solar', wellness:'spa y bienestar', fitness:'gimnasio y fitness', construccion:'renta de equipo construcciÃ³n', arquitectura:'arquitectura residencial' };
   return { nombre, industria: labels[key] || key, key };
 }
 
@@ -619,9 +619,9 @@ function updatePreviewMeta() {
   document.getElementById('ig-img-txt').style.color = c.accent + '30';
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // GENERATE
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function generarPost() {
   const btn = document.getElementById('btn-gen');
@@ -665,7 +665,7 @@ async function generarPost() {
     toast('Post generado', 'ok');
   } catch(e) {
     console.error(e);
-    toast('Error: verifica que el dashboard esté activo (localhost:3000)', 'err');
+    toast('Error: verifica que el dashboard estÃ© activo (localhost:3000)', 'err');
   }
 
   btn.disabled = false; btn.classList.remove('loading');
@@ -673,39 +673,39 @@ async function generarPost() {
 
 function buildPrompt(cliente, industria, tipo, red, tono, msg) {
   const tipoDesc = {
-    educativo:   'educativo — enseña algo valioso, tip o dato concreto',
-    promocional: 'promocional — presenta un servicio o producto con beneficios claros y precio/oferta si aplica',
-    engagement:  'de engagement — genera interacción con una pregunta directa o debate que invite a comentar',
-    testimonio:  'de testimonio — presenta un resultado real o caso de éxito con datos específicos',
-    cta:         'de CTA directo — llamada a la acción fuerte, genera urgencia o escasez concreta',
-    bts:         'behind the scenes — muestra el proceso interno, humaniza la marca, genera confianza'
+    educativo:   'educativo â€” enseÃ±a algo valioso, tip o dato concreto',
+    promocional: 'promocional â€” presenta un servicio o producto con beneficios claros y precio/oferta si aplica',
+    engagement:  'de engagement â€” genera interacciÃ³n con una pregunta directa o debate que invite a comentar',
+    testimonio:  'de testimonio â€” presenta un resultado real o caso de Ã©xito con datos especÃ­ficos',
+    cta:         'de CTA directo â€” llamada a la acciÃ³n fuerte, genera urgencia o escasez concreta',
+    bts:         'behind the scenes â€” muestra el proceso interno, humaniza la marca, genera confianza'
   }[tipo] || tipo;
 
   const tonoDesc = {
     profesional:   'profesional y directo, hechos sobre adjetivos',
     cercano:       'cercano y conversacional, como si hablaras con un conocido de negocios',
-    urgente:       'urgente con sentido de escasez o fecha límite específica',
-    inspiracional: 'inspiracional, aspiracional, con contraste antes/después'
+    urgente:       'urgente con sentido de escasez o fecha lÃ­mite especÃ­fica',
+    inspiracional: 'inspiracional, aspiracional, con contraste antes/despuÃ©s'
   }[tono] || tono;
 
-  return `Eres el estratega de contenido de VYNTRA Intelligent Systems para negocios del norte de México.
+  return `Eres el estratega de contenido de VYNTRA Intelligent Systems para negocios del norte de MÃ©xico.
 
 Genera un post ${tipoDesc} para ${red}. Cliente: "${cliente}" (industria: ${industria}).
 Tono: ${tonoDesc}.${msg ? `\nMensaje clave obligatorio: "${msg}".` : ''}
 
 REGLAS:
-- Voz: Precisa · Directa · Confiable · Norteña
-- PROHIBIDO: Potenciar, Sinergia, Disruptivo, Ecosistema, Empoderamos, Soluciones integrales, Transformación digital, Innovación
-- PRIORIZAR: Rendimiento, Retorno, Decisión, Datos, Calculado, Medible, Resultado, Inversión
-- Hook: engancha en las primeras 3 palabras, máx 12 palabras total
-- Cuerpo: párrafos cortos (1-3 líneas), máx 200 palabras, usa \\n para saltos
+- Voz: Precisa Â· Directa Â· Confiable Â· NorteÃ±a
+- PROHIBIDO: Potenciar, Sinergia, Disruptivo, Ecosistema, Empoderamos, Soluciones integrales, TransformaciÃ³n digital, InnovaciÃ³n
+- PRIORIZAR: Rendimiento, Retorno, DecisiÃ³n, Datos, Calculado, Medible, Resultado, InversiÃ³n
+- Hook: engancha en las primeras 3 palabras, mÃ¡x 12 palabras total
+- Cuerpo: pÃ¡rrafos cortos (1-3 lÃ­neas), mÃ¡x 200 palabras, usa \\n para saltos
 - Hashtags: 15-20 tags. Siempre incluir #chihuahua #cuu #chihuahuamexico. Mix: nicho + local + general
 
-Responde ÚNICAMENTE con JSON exacto, sin texto antes ni después:
+Responde ÃšNICAMENTE con JSON exacto, sin texto antes ni despuÃ©s:
 {
-  "hook": "Primera línea gancho",
+  "hook": "Primera lÃ­nea gancho",
   "cuerpo": "Cuerpo del post con \\n donde corresponda",
-  "cta": "Llamada a la acción (1 línea directa)",
+  "cta": "Llamada a la acciÃ³n (1 lÃ­nea directa)",
   "hashtags": ["#tag1","#tag2","#tag3"]
 }`;
 }
@@ -732,14 +732,14 @@ function renderResult(p) {
 
 function updateCharCount(el) {
   const n = el.textContent.length;
-  document.getElementById('char-cap').textContent = `${n} caracteres${n > 2200 ? ' ⚠ Instagram máx ~2200' : ''}`;
+  document.getElementById('char-cap').textContent = `${n} caracteres${n > 2200 ? ' âš  Instagram mÃ¡x ~2200' : ''}`;
 }
 
 document.getElementById('out-caption').addEventListener('input', function() { updateCharCount(this); });
 
-// ═══════════════════════════════════════════════════
-// IMAGE GENERATION (Pollinations.ai — FLUX-schnell, gratis)
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// IMAGE GENERATION (Pollinations.ai â€” FLUX-schnell, gratis)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function generarImagen() {
   if (!currentPost) { toast('Genera un post primero', 'err'); return; }
@@ -749,7 +749,7 @@ function generarImagen() {
   const imgEl  = document.getElementById('ig-img-gen');
 
   btn.disabled = true;
-  btn.textContent = '⟳ Generando imagen...';
+  btn.textContent = 'âŸ³ Generando imagen...';
   igImg.classList.remove('img-loaded');
   igImg.classList.add('img-loading');
 
@@ -764,32 +764,32 @@ function generarImagen() {
     igImg.classList.add('img-loaded');
     currentPost.imagen = url;
     btn.disabled = false;
-    btn.textContent = '↺ Regenerar imagen';
-    toast('Imagen generada ✓', 'ok');
+    btn.textContent = 'â†º Regenerar imagen';
+    toast('Imagen generada âœ“', 'ok');
   };
   imgEl.onerror = () => {
     igImg.classList.remove('img-loading');
     btn.disabled = false;
-    btn.textContent = '✦ Generar imagen con IA';
+    btn.textContent = 'âœ¦ Generar imagen con IA';
     toast('Error al generar imagen. Intenta de nuevo.', 'err');
   };
   imgEl.src = url;
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COPY
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 async function copyEl(elId, btn) {
   const text = document.getElementById(elId).textContent;
   await navigator.clipboard.writeText(text);
-  btn.textContent = 'Copiado ✓'; btn.classList.add('ok');
+  btn.textContent = 'Copiado âœ“'; btn.classList.add('ok');
   setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 1800);
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // STORAGE
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const LS = 'vyntra_posts_v2';
 const getPosts = () => JSON.parse(localStorage.getItem(LS) || '[]');
@@ -807,10 +807,10 @@ function guardarPost() {
   currentPost.hashtags = hashEl.textContent.split(/\s+/).filter(t => t.startsWith('#'));
 
   const posts = getPosts();
-  if (posts.find(p => p.id === currentPost.id)) { toast('Ya está guardado', 'err'); return; }
+  if (posts.find(p => p.id === currentPost.id)) { toast('Ya estÃ¡ guardado', 'err'); return; }
   posts.unshift(currentPost);
   setPosts(posts);
-  toast('Guardado en el banco ✓', 'ok');
+  toast('Guardado en el banco âœ“', 'ok');
 }
 
 function deletePost(id) {
@@ -825,9 +825,9 @@ function unassignPost(id) {
   if (i > -1) { posts[i].publicar = null; setPosts(posts); }
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // BANCO
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function setFilter(cli, el) {
   filterCli = cli;
@@ -855,11 +855,11 @@ function renderBanco() {
   if (shown.length === 0) { empty.style.display = 'block'; grid.innerHTML = ''; return; }
   empty.style.display = 'none';
 
-  const redIco = { Instagram:'📷', Facebook:'👤', TikTok:'🎵', LinkedIn:'💼' };
+  const redIco = { Instagram:'ðŸ“·', Facebook:'ðŸ‘¤', TikTok:'ðŸŽµ', LinkedIn:'ðŸ’¼' };
   grid.innerHTML = shown.map(p => {
     const fecha = new Date(p.generado).toLocaleDateString('es-MX', {day:'numeric',month:'short'});
-    const icon  = redIco[p.red] || '📱';
-    const sched = p.publicar ? `📅 ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'})}` : '';
+    const icon  = redIco[p.red] || 'ðŸ“±';
+    const sched = p.publicar ? `ðŸ“… ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{day:'numeric',month:'short'})}` : '';
     return `<div class="pcard" onclick="openPostMod(${p.id})">
       <div class="pcard-meta">
         <span class="pcard-cli">${p.cliente}</span>
@@ -869,10 +869,10 @@ function renderBanco() {
       <div class="pcard-hook">${esc(p.hook)}</div>
       <div class="pcard-prev">${esc(p.cuerpo)}</div>
       <div class="pcard-foot">
-        <span class="pcard-date">${fecha}${sched ? ' · '+sched : ''}</span>
+        <span class="pcard-date">${fecha}${sched ? ' Â· '+sched : ''}</span>
         <div class="pcard-acts">
-          <button class="ico-btn" title="Asignar al calendario" onclick="event.stopPropagation();openFechaMod(${p.id})">📅</button>
-          <button class="ico-btn del" title="Eliminar" onclick="event.stopPropagation();deletePost(${p.id})">×</button>
+          <button class="ico-btn" title="Asignar al calendario" onclick="event.stopPropagation();openFechaMod(${p.id})">ðŸ“…</button>
+          <button class="ico-btn del" title="Eliminar" onclick="event.stopPropagation();deletePost(${p.id})">Ã—</button>
         </div>
       </div>
     </div>`;
@@ -884,29 +884,29 @@ function openPostMod(id) {
   if (!p) return;
   const cap = `${p.hook}\n\n${p.cuerpo}\n\n${p.cta}`;
   const hash = p.hashtags.join(' ');
-  const redIco = { Instagram:'📷', Facebook:'👤', TikTok:'🎵', LinkedIn:'💼' };
-  const sched = p.publicar ? `<span>📅 ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'long'})}</span>` : '';
+  const redIco = { Instagram:'ðŸ“·', Facebook:'ðŸ‘¤', TikTok:'ðŸŽµ', LinkedIn:'ðŸ’¼' };
+  const sched = p.publicar ? `<span>ðŸ“… ${new Date(p.publicar+'T12:00:00').toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'long'})}</span>` : '';
 
-  document.getElementById('mod-post-ttl').textContent = `${p.cliente} · ${p.tipo}`;
+  document.getElementById('mod-post-ttl').textContent = `${p.cliente} Â· ${p.tipo}`;
   document.getElementById('mod-post-body').innerHTML = `
     ${p.imagen ? `<img src="${p.imagen}" style="width:100%;aspect-ratio:1;object-fit:cover;margin-bottom:14px;border:1px solid var(--border)" loading="lazy">` : ''}
     <div style="display:flex;gap:12px;font-size:10px;color:var(--muted);margin-bottom:14px;flex-wrap:wrap">
-      <span>${redIco[p.red]||'📱'} ${p.red}</span><span>·</span>
-      <span>${p.tono}</span><span>·</span>
+      <span>${redIco[p.red]||'ðŸ“±'} ${p.red}</span><span>Â·</span>
+      <span>${p.tono}</span><span>Â·</span>
       <span>${new Date(p.generado).toLocaleDateString('es-MX')}</span>
-      ${sched ? '<span>·</span>'+sched : ''}
+      ${sched ? '<span>Â·</span>'+sched : ''}
     </div>
     <div class="txt-blk" style="margin-bottom:12px">
       <div class="txt-blk-hdr">
         <span class="txt-blk-lbl">Caption completo</span>
-        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.closest('.txt-blk').querySelector('pre').textContent);this.textContent='Copiado ✓';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText(this.closest('.txt-blk').querySelector('pre').textContent);this.textContent='Copiado âœ“';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
       </div>
       <pre style="font-size:12px;line-height:1.7;color:rgba(255,255,255,.72);white-space:pre-wrap;max-height:200px;overflow-y:auto;font-family:Inter,sans-serif">${esc(cap)}</pre>
     </div>
     <div class="txt-blk" style="margin-bottom:16px">
       <div class="txt-blk-hdr">
         <span class="txt-blk-lbl">Hashtags</span>
-        <button class="btn-copy" onclick="navigator.clipboard.writeText('${hash.replace(/'/g,"\\'")}');this.textContent='Copiado ✓';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
+        <button class="btn-copy" onclick="navigator.clipboard.writeText('${hash.replace(/'/g,"\\'")}');this.textContent='Copiado âœ“';setTimeout(()=>this.textContent='Copiar',1500)">Copiar</button>
       </div>
       <div style="font-size:11px;color:var(--soft);line-height:1.7;word-break:break-all">${esc(hash)}</div>
     </div>
@@ -917,9 +917,9 @@ function openPostMod(id) {
   document.getElementById('mod-post').classList.add('on');
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ASIGNAR FECHA
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function openFechaMod(postId) {
   const p = getPosts().find(x => x.id === postId);
@@ -959,12 +959,12 @@ function assignDate(postId, dateStr) {
   closeMod('mod-fecha');
   renderBanco();
   renderCal();
-  toast(dateStr ? 'Fecha asignada al calendario ✓' : 'Fecha eliminada', 'ok');
+  toast(dateStr ? 'Fecha asignada al calendario âœ“' : 'Fecha eliminada', 'ok');
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CALENDARIO
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function moveMonth(d) {
   calM += d;
@@ -983,7 +983,7 @@ function renderCal() {
   const today = new Date();
   const posts = getPosts();
 
-  const DAYS = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const DAYS = ['Dom','Lun','Mar','MiÃ©','Jue','Vie','SÃ¡b'];
   let h = DAYS.map(d=>`<div class="cal-dh">${d}</div>`).join('');
 
   // Prev month pads
@@ -1029,7 +1029,7 @@ function clickDay(ds) {
     body += `<div style="font-size:8px;font-weight:800;letter-spacing:2px;color:var(--soft);margin-bottom:8px">PROGRAMADOS</div>`;
     body += dayPosts.map(p => `
       <div style="background:rgba(37,99,235,.07);border-left:2px solid var(--cobalto);padding:8px 12px;margin-bottom:6px;cursor:pointer;font-size:12px" onclick="closeMod('mod-fecha');openPostMod(${p.id})">
-        <div style="font-size:9px;color:var(--soft);font-weight:800;margin-bottom:2px">${p.cliente} · ${p.red}</div>
+        <div style="font-size:9px;color:var(--soft);font-weight:800;margin-bottom:2px">${p.cliente} Â· ${p.red}</div>
         <div>${esc(p.hook)}</div>
         <button onclick="event.stopPropagation();assignDate(${p.id},null)" style="margin-top:6px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:9px;font-family:Inter;padding:2px 8px;cursor:pointer;letter-spacing:1px;text-transform:uppercase">Quitar</button>
       </div>`).join('');
@@ -1037,15 +1037,15 @@ function clickDay(ds) {
   }
 
   if (free.length > 0) {
-    body += `<div style="font-size:8px;font-weight:800;letter-spacing:2px;color:var(--soft);margin-bottom:8px">AGREGAR AL DÍA</div>`;
+    body += `<div style="font-size:8px;font-weight:800;letter-spacing:2px;color:var(--soft);margin-bottom:8px">AGREGAR AL DÃA</div>`;
     body += `<div style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto">`;
     body += free.map(p => `
       <button onclick="assignDate(${p.id},'${ds}')" style="background:transparent;border:1px solid var(--border);color:#fff;padding:9px 12px;text-align:left;cursor:pointer;font-family:Inter,sans-serif;font-size:12px;width:100%;transition:all .15s" onmouseover="this.style.borderColor='var(--cobalto)'" onmouseout="this.style.borderColor='rgba(37,99,235,.16)'">
-        <span style="font-size:9px;color:var(--soft);font-weight:800">${p.cliente}</span> — ${esc(p.hook.slice(0,40))}
+        <span style="font-size:9px;color:var(--soft);font-weight:800">${p.cliente}</span> â€” ${esc(p.hook.slice(0,40))}
       </button>`).join('');
     body += `</div>`;
   } else if (dayPosts.length === 0) {
-    body += `<p style="font-size:12px;color:var(--muted)">No hay posts sin fecha en el banco.<br>Genera un post y guárdalo primero.</p>`;
+    body += `<p style="font-size:12px;color:var(--muted)">No hay posts sin fecha en el banco.<br>Genera un post y guÃ¡rdalo primero.</p>`;
   }
 
   document.getElementById('mod-fecha-ttl').textContent = label;
@@ -1053,42 +1053,43 @@ function clickDay(ds) {
   document.getElementById('mod-fecha').classList.add('on');
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // MODAL
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function closeMod(id, e) {
   if (e && e.target.id !== id) return;
   document.getElementById(id).classList.remove('on');
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TOAST
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let toastTimer;
 function toast(msg, type='') {
   const el = document.getElementById('toast');
-  el.textContent = (type==='ok'?'✓ ':type==='err'?'⚠ ':'') + msg;
+  el.textContent = (type==='ok'?'âœ“ ':type==='err'?'âš  ':'') + msg;
   el.className = 'toast on ' + type;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.className = 'toast', 2600);
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // UTIL
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 function esc(s='') {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INIT
-// ═══════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 updatePreviewMeta();
 
 </script>
 </body>
 </html>
+
