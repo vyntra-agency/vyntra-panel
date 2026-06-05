@@ -4,12 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel VYNTRA — Laura</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="VYNTRA">
-<meta name="theme-color" content="#0D1F40">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -255,6 +249,44 @@ body { font-family:'Inter',Helvetica,sans-serif; background:var(--sand); color:v
   .m-val { font-size:17px; }
   .sum-val { font-size:24px; }
 }
+
+/* ── AGENDA ── */
+.agenda-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+.agenda-filters { display:flex; gap:8px; }
+.af-btn { padding:7px 16px; border-radius:20px; border:2px solid #e5e7eb; background:#fff; font-size:13px; font-weight:600; cursor:pointer; color:#555; transition:all .15s; }
+.af-btn.active { background:var(--cobalt); color:#fff; border-color:var(--cobalt); }
+.agenda-add-btn { background:var(--navy); color:#fff; border:none; border-radius:10px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:background .15s; }
+.agenda-add-btn:hover { background:#1a2f5a; }
+.agenda-empty { text-align:center; padding:48px 0; color:#bbb; font-size:14px; }
+.agenda-empty strong { display:block; font-size:18px; color:#ccc; margin-bottom:6px; }
+.agenda-list { display:flex; flex-direction:column; gap:12px; }
+.ev-card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 1px 6px rgba(0,0,0,.06); display:flex; align-items:flex-start; gap:16px; }
+.ev-icon { font-size:24px; flex-shrink:0; width:40px; text-align:center; }
+.ev-body { flex:1; min-width:0; }
+.ev-title { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:2px; }
+.ev-meta { font-size:12px; color:#888; margin-bottom:4px; }
+.ev-desc { font-size:13px; color:#666; }
+.ev-badges { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
+.ev-badge { font-size:11px; font-weight:700; padding:2px 10px; border-radius:20px; background:var(--sand); color:#555; }
+.ev-badge.reunion { background:#EEF2FF; color:#3730a3; }
+.ev-badge.llamada { background:#F0FDF4; color:#166534; }
+.ev-badge.cobro { background:var(--ybg); color:#92400e; }
+.ev-badge.seguimiento { background:#f3e8ff; color:#7e22ce; }
+.ev-delete { background:none; border:none; cursor:pointer; color:#ddd; font-size:16px; transition:color .15s; flex-shrink:0; padding:4px; }
+.ev-delete:hover { color:var(--red); }
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:#fff; border-radius:18px; padding:30px; width:100%; max-width:480px; margin:16px; }
+.modal-title { font-family:Georgia,serif; font-size:19px; font-weight:bold; color:var(--navy); margin-bottom:20px; }
+.form-group { margin-bottom:14px; }
+.form-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:5px; display:block; }
+.form-input { width:100%; border:2px solid #e5e7eb; border-radius:10px; padding:10px 14px; font-size:14px; font-family:inherit; outline:none; transition:border-color .15s; }
+.form-input:focus { border-color:var(--cobalt); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+.btn-cancel { background:var(--sand); border:none; border-radius:10px; padding:10px 20px; font-size:14px; font-weight:600; color:#555; cursor:pointer; }
+.btn-save { background:var(--cobalt); border:none; border-radius:10px; padding:10px 22px; font-size:14px; font-weight:600; color:#fff; cursor:pointer; }
+.btn-save:hover { background:#1a52d9; }
 </style>
 </head>
 <body>
@@ -288,6 +320,9 @@ body { font-family:'Inter',Helvetica,sans-serif; background:var(--sand); color:v
     <div class="nav-item" onclick="show('tareas',this)">
       <span class="nav-icon">📋</span> Mis Tareas
     </div>
+    <div class="nav-item" onclick="show('agenda',this)">
+      <span class="nav-icon">📅</span> Agenda
+    </div>
     <div class="nav-item" onclick="show('chat',this)">
       <span class="nav-icon">🤖</span> Chat IA
     </div>
@@ -307,6 +342,7 @@ body { font-family:'Inter',Helvetica,sans-serif; background:var(--sand); color:v
     <div class="mob-item" onclick="show('correos',this,true)"><span class="mi">✉️</span>Correos</div>
     <div class="mob-item" onclick="show('checklists',this,true)"><span class="mi">✅</span>Checks</div>
     <div class="mob-item" onclick="show('tareas',this,true)"><span class="mi">📋</span>Tareas</div>
+    <div class="mob-item" onclick="show('agenda',this,true)"><span class="mi">📅</span>Agenda</div>
     <div class="mob-item" onclick="show('chat',this,true)"><span class="mi">🤖</span>Chat IA</div>
   </div>
 </div>
@@ -657,11 +693,75 @@ Socia Comercial · VYNTRA Intelligent Systems
     </div>
   </div>
 
+  <!-- ══ AGENDA ══ -->
+  <div id="agenda" class="section">
+    <div class="ph">
+      <div class="ph-title">Agenda VYNTRA</div>
+      <div class="ph-sub">Eventos compartidos con Nexo — reuniones, cobros, seguimientos</div>
+    </div>
+    <div class="agenda-header">
+      <div class="agenda-filters">
+        <button class="af-btn active" onclick="cargarAgenda('hoy',this)">Hoy</button>
+        <button class="af-btn" onclick="cargarAgenda('semana',this)">Esta semana</button>
+        <button class="af-btn" onclick="cargarAgenda('todo',this)">Todo</button>
+      </div>
+      <button class="agenda-add-btn" onclick="abrirModalAgenda()">+ Nuevo evento</button>
+    </div>
+    <div id="agendaList" class="agenda-list">
+      <div class="agenda-empty"><strong>Cargando...</strong></div>
+    </div>
+  </div>
+
+  <!-- Modal nuevo evento -->
+  <div id="modalAgenda" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-title">Nuevo evento</div>
+      <div class="form-group">
+        <label class="form-label">Título *</label>
+        <input id="evTitulo" class="form-input" type="text" placeholder="Ej: Reunión con Cheesy Planet">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Fecha *</label>
+          <input id="evFecha" class="form-input" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hora</label>
+          <input id="evHora" class="form-input" type="time" value="10:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tipo *</label>
+          <select id="evTipo" class="form-input">
+            <option value="reunion">Reunión</option>
+            <option value="llamada">Llamada</option>
+            <option value="cobro">Cobro</option>
+            <option value="seguimiento">Seguimiento</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cliente</label>
+          <input id="evCliente" class="form-input" type="text" placeholder="Nombre del cliente">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notas</label>
+        <input id="evDesc" class="form-input" type="text" placeholder="Notas adicionales (opcional)">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="cerrarModalAgenda()">Cancelar</button>
+        <button class="btn-save" onclick="guardarEvento()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ CHAT IA ══ -->
   <div id="chat" class="section">
     <div class="ph">
-      <div class="ph-title">Nova — IA VYNTRA</div>
-      <div class="ph-sub">Pregúntale cualquier cosa: clientes, campañas, noticias, clima, hora o lo que necesites</div>
+      <div class="ph-title">Chat con IA</div>
+      <div class="ph-sub">Pregúntale cualquier cosa sobre VYNTRA, clientes, campañas o plantillas</div>
     </div>
 
     <div class="chat-wrap">
@@ -683,7 +783,7 @@ Socia Comercial · VYNTRA Intelligent Systems
 
       <!-- INPUT -->
       <div class="chat-input-row">
-        <textarea class="chat-input" id="chatInput" placeholder="Escríbele a Nova... (Enter para enviar)" rows="1" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea>
+        <textarea class="chat-input" id="chatInput" placeholder="Escribe tu pregunta... (Enter para enviar)" rows="1" onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendChat()">➤</button>
       </div>
     </div>
@@ -814,9 +914,13 @@ function renderChecklists() {
     const total = CL_ITEMS.length;
     const done = CL_ITEMS.filter((_, i) => saved[i]).length;
     const pct = Math.round((done / total) * 100);
-    const driveHtml = c.drive
-      ? `<a href="${c.drive}" target="_blank" class="drive-btn">📁 Ver Drive del cliente</a>`
-      : `<button class="drive-btn pending" title="Agrega el link de Drive en el código">📁 Drive pendiente</button>`;
+    const savedDrive = localStorage.getItem(`vyntra_drive_${c.id}`) || c.drive;
+    const driveHtml = savedDrive
+      ? `<div style="display:flex;gap:6px;align-items:center">
+           <a href="${savedDrive}" target="_blank" class="drive-btn">📁 Ver Drive</a>
+           <button class="drive-btn" style="background:#555;padding:8px 10px" onclick="configurarDrive('${c.id}')" title="Cambiar link">✏️</button>
+         </div>`
+      : `<button class="drive-btn pending" onclick="configurarDrive('${c.id}')">📁 Configurar Drive</button>`;
     const items = CL_ITEMS.map((item, i) => `
       <label class="cl-item">
         <input type="checkbox" ${saved[i] ? 'checked' : ''} onchange="toggleCheck('${c.id}',${i},this)">
@@ -835,6 +939,18 @@ function renderChecklists() {
       <div class="cl-items">${items}</div>
     </div>`;
   }).join('');
+}
+
+function configurarDrive(clientId) {
+  const actual = localStorage.getItem(`vyntra_drive_${clientId}`) || '';
+  const val = prompt('Pega el link de Google Drive para este cliente:', actual);
+  if (val === null) return;
+  if (val.trim()) {
+    localStorage.setItem(`vyntra_drive_${clientId}`, val.trim());
+  } else {
+    localStorage.removeItem(`vyntra_drive_${clientId}`);
+  }
+  renderChecklists();
 }
 
 function toggleCheck(clientId, idx, el) {
@@ -952,7 +1068,7 @@ async function sendChat() {
   try {
     const res = await fetch(chatUrl + '/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
+      headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', 'Authorization': 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf' },
       body: JSON.stringify({ messages: chatHistory })
     });
     const data = await res.json();
@@ -979,11 +1095,177 @@ function autoResize(el) {
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 
+// ──────────────────────────────────────────────
+// AGENDA
+// ──────────────────────────────────────────────
+const TIPO_ICONO = { reunion:'📅', llamada:'📞', cobro:'💰', seguimiento:'🔔', otro:'📌' };
+const TIPO_LABEL = { reunion:'Reunión', llamada:'Llamada', cobro:'Cobro', seguimiento:'Seguimiento', otro:'Otro' };
+let agendaPeriodo = 'hoy';
+
+function agendaAuth() {
+  return { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', 'Authorization': 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf' };
+}
+
+async function cargarAgenda(periodo, btn) {
+  agendaPeriodo = periodo || agendaPeriodo;
+  document.querySelectorAll('.af-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const list = document.getElementById('agendaList');
+  if (!chatUrl) { list.innerHTML = '<div class="agenda-empty"><strong>Sin servidor</strong>Configura la URL del servidor en Chat IA</div>'; return; }
+  list.innerHTML = '<div class="agenda-empty"><strong>Cargando...</strong></div>';
+  try {
+    const r = await fetch(`${chatUrl}/api/agenda?periodo=${agendaPeriodo}`, { headers: agendaAuth() });
+    const eventos = await r.json();
+    renderAgenda(eventos);
+  } catch {
+    list.innerHTML = '<div class="agenda-empty"><strong>Sin conexión</strong>Verifica que el servidor esté corriendo</div>';
+  }
+}
+
+function renderAgenda(eventos) {
+  const list = document.getElementById('agendaList');
+  if (!eventos.length) {
+    list.innerHTML = '<div class="agenda-empty"><strong>Sin eventos</strong>No hay nada agendado para este período</div>';
+    return;
+  }
+  const fmt = { weekday:'long', year:'numeric', month:'long', day:'numeric', timeZone:'America/Chihuahua' };
+  list.innerHTML = eventos.map(e => {
+    const fecha = new Date(e.fecha + 'T12:00:00').toLocaleDateString('es-MX', fmt);
+    const cliente = e.cliente ? `<span class="ev-badge">${e.cliente}</span>` : '';
+    const desc = e.descripcion ? `<div class="ev-desc">${e.descripcion}</div>` : '';
+    return `<div class="ev-card">
+      <div class="ev-icon">${TIPO_ICONO[e.tipo] || '📌'}</div>
+      <div class="ev-body">
+        <div class="ev-title">${e.titulo}</div>
+        <div class="ev-meta">${fecha} · ${e.hora}</div>
+        ${desc}
+        <div class="ev-badges"><span class="ev-badge ${e.tipo}">${TIPO_LABEL[e.tipo] || e.tipo}</span>${cliente}</div>
+      </div>
+      <button class="ev-delete" onclick="eliminarEvento('${e.id}')" title="Eliminar">✕</button>
+    </div>`;
+  }).join('');
+}
+
+async function eliminarEvento(id) {
+  if (!confirm('¿Eliminar este evento?')) return;
+  await fetch(`${chatUrl}/api/agenda/${id}`, { method:'DELETE', headers: agendaAuth() });
+  cargarAgenda(agendaPeriodo);
+}
+
+function abrirModalAgenda() {
+  document.getElementById('evFecha').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('modalAgenda').classList.add('open');
+}
+function cerrarModalAgenda() { document.getElementById('modalAgenda').classList.remove('open'); }
+
+async function guardarEvento() {
+  const titulo = document.getElementById('evTitulo').value.trim();
+  const fecha  = document.getElementById('evFecha').value;
+  const hora   = document.getElementById('evHora').value || '09:00';
+  const tipo   = document.getElementById('evTipo').value;
+  const cliente = document.getElementById('evCliente').value.trim();
+  const descripcion = document.getElementById('evDesc').value.trim();
+  if (!titulo || !fecha) return alert('Título y fecha son obligatorios');
+  await fetch(`${chatUrl}/api/agenda`, {
+    method: 'POST', headers: agendaAuth(),
+    body: JSON.stringify({ titulo, fecha, hora, tipo, cliente, descripcion })
+  });
+  cerrarModalAgenda();
+  ['evTitulo','evCliente','evDesc'].forEach(id => document.getElementById(id).value = '');
+  cargarAgenda(agendaPeriodo);
+}
+
+document.getElementById('modalAgenda').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalAgenda')) cerrarModalAgenda();
+});
+
+// ──────────────────────────────────────────────
+// PUSH NOTIFICATIONS (Web Push + in-panel toast)
+// ──────────────────────────────────────────────
+function mostrarToast(titulo, cuerpo) {
+  let t = document.getElementById('vyntraToast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'vyntraToast';
+    t.style.cssText = [
+      'position:fixed','top:20px','right:20px','z-index:9999',
+      'background:#0D1F40','color:#fff','border-radius:14px',
+      'padding:18px 22px','box-shadow:0 8px 32px rgba(0,0,0,.35)',
+      'max-width:320px','display:none','border-left:5px solid #2563EB',
+      'font-family:Inter,sans-serif','cursor:pointer','transition:opacity .3s'
+    ].join(';');
+    t.onclick = () => { t.style.display = 'none'; };
+    document.body.appendChild(t);
+  }
+  t.innerHTML = `<div style="font-weight:700;font-size:14px;margin-bottom:5px">🔔 ${titulo}</div><div style="font-size:13px;opacity:.85;line-height:1.5">${cuerpo}</div>`;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.opacity = '0'; setTimeout(() => { t.style.display = 'none'; t.style.opacity = '1'; }, 400); }, 7000);
+}
+
+function urlB64ToUint8(base64) {
+  const pad = '='.repeat((4 - base64.length % 4) % 4);
+  const b64 = (base64 + pad).replace(/-/g, '+').replace(/_/g, '/');
+  return Uint8Array.from([...atob(b64)].map(c => c.charCodeAt(0)));
+}
+
+async function initPush() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    const reg = await navigator.serviceWorker.register('/sw.js');
+
+    // Escuchar mensajes del SW (toast cuando el tab está abierto)
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type === 'PUSH_TOAST') mostrarToast(e.data.titulo, e.data.cuerpo);
+    });
+
+    // Solicitar permiso de notificaciones
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') return;
+
+    // Obtener clave VAPID del servidor
+    const kr = await fetch(chatUrl + '/api/push/vapid-key', { headers: { Authorization: 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf', 'ngrok-skip-browser-warning': 'true' } });
+    if (!kr.ok) return;
+    const { publicKey } = await kr.json();
+
+    // Suscribirse si no existe ya
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(publicKey) });
+    }
+
+    // Registrar suscripción en el servidor
+    await fetch(chatUrl + '/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf', 'ngrok-skip-browser-warning': 'true' },
+      body: JSON.stringify(sub)
+    });
+    console.log('🔔 Push activado para Laura');
+  } catch(e) { console.warn('Push init:', e.message); }
+}
+
+// Polling inbox cada 30s (para toast in-panel cuando llega mensaje mientras tab está abierto)
+let lastInboxCheck = Date.now();
+setInterval(async () => {
+  if (!chatUrl) return;
+  try {
+    const r = await fetch(`${chatUrl}/api/push/inbox?since=${lastInboxCheck}`, {
+      headers: { Authorization: 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf', 'ngrok-skip-browser-warning': 'true' }
+    });
+    if (!r.ok) return;
+    const msgs = await r.json();
+    lastInboxCheck = Date.now();
+    msgs.forEach(m => mostrarToast(m.titulo, m.cuerpo));
+  } catch {}
+}, 30_000);
+
 // ─── INIT ───
 renderClientes();
 renderChecklists();
 setTimestamp();
 updateUrlBar();
+cargarAgenda('hoy');
+if (chatUrl) initPush();
 </script>
 </body>
 </html>
