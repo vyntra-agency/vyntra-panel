@@ -961,12 +961,26 @@ const CL_ITEMS = [
 ];
 
 // ─── RENDER CLIENTES ───
-function renderClientes() {
+function renderClientesConDatos(clientes, esReal) {
   const grid = document.getElementById('clientsGrid');
   const platLabel = { meta:'Meta Ads', google:'Google Ads', tiktok:'TikTok' };
-  grid.innerHTML = DATOS.clientes.map(c => {
-    const plats = c.plataformas.map(p => `<span class="plat ${p}">${platLabel[p]}</span>`).join('');
+  const badge = esReal
+    ? `<div style="display:inline-flex;align-items:center;gap:5px;background:#dcfce7;color:#16a34a;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;margin-top:6px"><span style="width:6px;height:6px;border-radius:50%;background:#16a34a;display:inline-block"></span>Datos en tiempo real</div>`
+    : `<div style="display:inline-flex;align-items:center;gap:5px;background:#fef3c7;color:#d97706;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;margin-top:6px">⚠️ Sin conexión — mostrando datos de referencia</div>`;
+
+  const ts = document.getElementById('ts');
+  if (ts && esReal) {
+    const d = new Date();
+    ts.textContent = `Actualizado: ${d.toLocaleString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}`;
+  }
+
+  document.querySelector('.update-badge').innerHTML = badge.replace('div style=', 'div class="update-badge" style=').replace('<div class="update-badge"', '<span').replace('</div>', '</span>');
+  document.querySelector('.update-badge').outerHTML = badge;
+
+  grid.innerHTML = clientes.map(c => {
+    const plats = (c.plataformas || ['meta']).map(p => `<span class="plat ${p}">${platLabel[p] || p}</span>`).join('');
     const alertHtml = c.alerta ? `<div class="alert-bar">⚠️ ${c.alerta}</div>` : '';
+    const m = c.metricas || {};
     return `
     <div class="cc ${c.status}">
       <div class="cc-head">
@@ -983,30 +997,52 @@ function renderClientes() {
       <div class="metrics-g">
         <div class="m-item">
           <div class="m-lbl">ROAS</div>
-          <div class="m-val" style="color:${c.metricas.roas >= 2.5 ? 'var(--green)' : c.metricas.roas >= 1.8 ? 'var(--yellow)' : 'var(--red)'}">${c.metricas.roas.toFixed(1)}</div>
+          <div class="m-val" style="color:${(m.roas||0) >= 2.5 ? 'var(--green)' : (m.roas||0) >= 1.8 ? 'var(--yellow)' : 'var(--red)'}">${(m.roas||0).toFixed(1)}</div>
           <div class="m-unit">objetivo 2.5+</div>
         </div>
         <div class="m-item">
           <div class="m-lbl">CPC</div>
-          <div class="m-val">$${c.metricas.cpc.toFixed(2)}</div>
+          <div class="m-val">$${(m.cpc||0).toFixed(2)}</div>
           <div class="m-unit">MXN</div>
         </div>
         <div class="m-item">
           <div class="m-lbl">CTR</div>
-          <div class="m-val">${c.metricas.ctr.toFixed(1)}%</div>
+          <div class="m-val">${(m.ctr||0).toFixed(1)}%</div>
           <div class="m-unit">clicks/impr.</div>
         </div>
       </div>
       <div class="plat-row">${plats}</div>
-      <div class="cc-notes">💰 Gasto hoy: <strong>$${c.metricas.spend.toLocaleString()} MXN</strong> &nbsp;·&nbsp; ${c.notas}</div>
+      <div class="cc-notes">💰 Gasto período: <strong>$${(m.spend||0).toLocaleString()} MXN</strong>${c.notas ? ' &nbsp;·&nbsp; ' + c.notas : ''}</div>
     </div>`;
   }).join('');
 }
 
+async function cargarMetricas() {
+  if (!chatUrl) { renderClientesConDatos(DATOS.clientes, false); return; }
+  try {
+    const res = await fetch(chatUrl + '/api/metricas', {
+      headers: { 'Authorization': 'Bearer m87UuFkjCcHIaSL6XMxisgWVDYEGd5tf', 'ngrok-skip-browser-warning': 'true' }
+    });
+    if (!res.ok) throw new Error('Sin datos');
+    const data = await res.json();
+    if (data.clientes?.length) {
+      renderClientesConDatos(data.clientes, true);
+      renderChecklists(data.clientes);
+      return;
+    }
+    throw new Error('Sin clientes');
+  } catch {
+    renderClientesConDatos(DATOS.clientes, false);
+  }
+}
+
+function renderClientes() { cargarMetricas(); }
+
 // ─── RENDER CHECKLISTS ───
-function renderChecklists() {
+function renderChecklists(clientesOverride) {
   const list = document.getElementById('clList');
-  list.innerHTML = DATOS.clientes.map(c => {
+  const fuente = clientesOverride || DATOS.clientes;
+  list.innerHTML = fuente.map(c => {
     const key = `vyntra_cl_${c.id}`;
     const saved = JSON.parse(localStorage.getItem(key) || '{}');
     const total = CL_ITEMS.length;
@@ -1479,12 +1515,13 @@ setInterval(async () => {
 }, 30_000);
 
 // ─── INIT ───
-renderClientes();
+cargarMetricas();
 renderChecklists();
 setTimestamp();
 updateUrlBar();
 cargarAgenda();
 if (chatUrl) initPush();
+setInterval(cargarMetricas, 5 * 60 * 1000);
 </script>
 </body>
 </html>
