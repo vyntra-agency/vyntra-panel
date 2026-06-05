@@ -1,6 +1,6 @@
 {
-  "name": "VYNTRA Panel — Laura",
-  "short_name": "VYNTRA",
+  "name": "Nova — VYNTRA",
+  "short_name": "Nova",
   "description": "Panel interno VYNTRA - Socia Comercial",
   "start_url": "./index.html",
   "display": "standalone",
